@@ -11,5 +11,4 @@
 |
 */
 
-$this->get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
-$this->get('/home', ['as' => 'home', 'uses' => 'HomeController@index']);
+/*$this->get('/', ['as' => 'home', 'uses' => 'HomeController@index']);*/

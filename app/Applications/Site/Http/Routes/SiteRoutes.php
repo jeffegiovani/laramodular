@@ -7,7 +7,6 @@ use App\Core\Http\Routes\RoutesFile;
 class SiteRoutes extends RoutesFile
 {
 
-
     /**
      * @return mixed|void
      *
@@ -49,9 +48,18 @@ class SiteRoutes extends RoutesFile
 
 	}
 
-
-
+    /**
+     * Rotas da área de produtos
+     */
 	protected function mapProdutosRoutes()
+    {
+
+    }
+
+    /**
+     * Rotas do Blog
+     */
+	protected function mapBlogRoutes()
     {
 
     }
