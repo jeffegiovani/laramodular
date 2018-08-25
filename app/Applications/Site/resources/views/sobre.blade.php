@@ -1,5 +1,5 @@
 @extends('site::base')
 
 @section('page')
-	<h1>{{ __('Site base') }}</h1>
+	<h1>{{ __('Sobre a empresa') }}</h1>
 @endsection

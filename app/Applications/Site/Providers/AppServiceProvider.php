@@ -3,6 +3,8 @@
 namespace App\Applications\Site\Providers;
 
 use Illuminate\Support\Facades\App;
+
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Request;
 
 use Illuminate\Support\ServiceProvider;
@@ -16,9 +18,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        /**
+         * Registrando o provedor de rotas
+         */
+        $this->app->register(RouteServiceProvider::class);
+
+        // dd('Boot');
+
         //
-		$this->loadViewsFrom(__DIR__.'/../resources/views', 'site');
-		$this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'site');
+		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'site');
+		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'site');
+
+        /**
+         * Reference: https://github.com/laravel/framework/pull/20599
+         */
+		$this->loadJSONTranslationsFrom(__DIR__ . '/../resources/lang');
 
 		/*
 		 * Set up locale and locale_prefix if other language is selected
@@ -36,7 +51,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(RouteServiceProvider::class);
+        // dd('Register');
+
+        // $this->app->register(RouteServiceProvider::class);
         // $this->app->register(EventServiceProvider::class);
     }
 }

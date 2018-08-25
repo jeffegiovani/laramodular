@@ -3,7 +3,7 @@
 namespace App\Applications\Site\Http\Controllers;
 
 
-class HomeController extends BaseController
+class IndexRedirectController extends BaseController
 {
 
 	public function index()
@@ -14,11 +14,7 @@ class HomeController extends BaseController
 
 	public function sobre()
 	{
+		//return [1 => 2];
 		return $this->view('sobre');
-	}
-
-	public function produtos()
-	{
-		return $this->view('produtos');
 	}
 }

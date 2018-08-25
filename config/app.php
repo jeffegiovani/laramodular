@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'pt_BR',
+    'locale' => 'pt-br',
 
     /*
     |--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ return [
      * Let's also add a all_langs array
      */
 
-    'all_langs' => ['en', 'es', 'pt_BR'],
+    'all_langs' => ['pt-br', 'en', 'es'],
 
     /*
     |--------------------------------------------------------------------------
@@ -183,7 +183,10 @@ return [
 		 * Applications Service Providers
 		 */
 		App\Applications\Site\Providers\AppServiceProvider::class,
+		// App\Applications\Site\Providers\RouteServiceProvider::class,
+
 		// App\Applications\Api\Providers\AppServiceProvider::class,
+
 		// App\Applications\Gestor\Providers\AppServiceProvider::class,
 
     ],
