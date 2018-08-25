@@ -8,59 +8,132 @@ class SiteRoutes extends RoutesFile
 {
 
     /**
+     * @var array
+     */
+    protected $all_langs;
+
+    /**
      * @return mixed|void
      *
      * Referencia: https://stackoverflow.com/questions/25082154/how-to-create-multilingual-translated-routes-in-laravel
      */
 	protected function routes()
 	{
-        $all_langs = config('app.all_langs');
+        $this->all_langs = config('app.all_langs');
 
-        /**
-         * Iterate over each language prefix
-         */
-        foreach( $all_langs as $prefix ){
-
-            /**
-             * Register new route group with current prefix
-             */
-            $this->router->group(['prefix' => $prefix], function() use ($prefix) {
-
-                // Now we need to make sure the default prefix points to default  lang folder.
-                if ($prefix == '') $prefix = 'pt-br';
-
-                $this->router->get('/', 'HomeController@index')->name(str_replace('-', '', $prefix) . '_home');
-
-                $this->router
-                    ->get(trans('site::routes.sobre',[], $prefix) , 'HomeController@sobre')
-                    ->name(str_replace('-', '', $prefix) . '_sobre');
-
-                $this->router
-                    ->get(trans('site::routes.produtos',[], $prefix) , 'HomeController@produtos')
-                    ->name(str_replace('-', '', $prefix) . '_produtos');
-
-            });
-        }
-
-		// $this->router->get('/', 'HomeController@index');
-		// $this->router->get('teste', 'HomeController@index');
-		// $this->router->post('post-teste', 'HomeController@index');
+	    $this->mapSiteRoutes();
+	    $this->mapProdutosRoutes();
+	    $this->mapArtigosRoutes();
 
 	}
 
     /**
-     * Rotas da área de produtos
+     * Rotas genéricas do site
      */
-	protected function mapProdutosRoutes()
+    protected function mapSiteRoutes()
     {
+        // Home
+        $this->router->get('/', 'IndexRedirectController@index')->name('home');
 
+        /**
+         * Iterate over each language prefix
+         */
+        foreach ($this->all_langs as $lang_prefix) {
+
+            /**
+             * Register new route group with current prefix
+             */
+            $this->router->group(['prefix' => $lang_prefix], function () use ($lang_prefix) {
+
+                /**
+                 * Site main page
+                 */
+                $this->router->get('/', 'HomeController@index')->name(str_replace('-', '', $lang_prefix) . '_home');
+
+            });
+        }
     }
 
     /**
-     * Rotas do Blog
+     * Rotas da área de produtos
      */
-	protected function mapBlogRoutes()
+    protected function mapProdutosRoutes()
     {
 
+        /**
+         * Iterate over each language prefix
+         */
+        foreach ($this->all_langs as $lang_prefix) {
+
+            /**
+             * Register new route group with current prefix
+             */
+            $this->router->group([
+                'prefix' => $lang_prefix,
+                'namespace' => 'Produtos'
+            ], function () use ($lang_prefix) {
+                $this->router->group(['prefix' => trans('site::routes.produtos', [], $lang_prefix)], function () use ($lang_prefix) {
+
+                    /**
+                     * Produtos main page
+                     */
+                    $this->router
+                        ->get('/', 'ProdutosController@index')
+                        ->name(str_replace('-', '', $lang_prefix) . '_produtos');
+
+                    /**
+                     * Produtos por categoria
+                     */
+                    $this->router
+                        ->get(trans('site::routes.produtos_categ', [], $lang_prefix), 'ProdutosController@categoria')
+                        ->name(str_replace('-', '', $lang_prefix) . '_produtos_categ');
+                });
+
+            });
+        }
+    }
+
+    /**
+     * Rotas do Artigos
+     */
+    protected function mapArtigosRoutes()
+    {
+
+        /**
+         * Iterate over each language prefix
+         */
+        foreach ($this->all_langs as $lang_prefix) {
+            /**
+             * Register new route group with current prefix
+             */
+            $this->router->group([
+                'prefix' => $lang_prefix,
+                'namespace' => 'Artigos'
+            ], function () use ($lang_prefix) {
+                $this->router->group(['prefix' => trans('site::routes.artigos', [], $lang_prefix)], function () use ($lang_prefix) {
+
+                    /**
+                     * Artigos main page
+                     */
+                    $this->router
+                        ->get('/', 'ArtigosController@index')
+                        ->name(str_replace('-', '', $lang_prefix) . '_artigos');
+
+                    /**
+                     * Posts da categoria
+                     */
+                    $this->router
+                        ->get(trans('site::routes.artigos_categ', [], $lang_prefix), 'ArtigosController@categoria')
+                        ->name(str_replace('-', '', $lang_prefix) . '_artigos_categoria');
+
+                    /**
+                     * Posts da categoria
+                     */
+                    $this->router
+                        ->get(trans('site::routes.artigos_tag', [], $lang_prefix), 'ArtigosController@tag')
+                        ->name(str_replace('-', '', $lang_prefix) . '_artigos_tag');
+                });
+            });
+        }
     }
 }

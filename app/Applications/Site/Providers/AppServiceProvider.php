@@ -4,6 +4,7 @@ namespace App\Applications\Site\Providers;
 
 use Illuminate\Support\Facades\App;
 
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Request;
 
@@ -41,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
         if (in_array(Request::segment(1), config('app.alt_langs'))) {
             App::setLocale(Request::segment(1));
             config([ 'app.locale_prefix' => Request::segment(1) ]);
+
+            Cookie::queue('last_locale', Request::segment(1), 60 * 24 * 30); // Setando cookie para 30 dias
         }
     }
 

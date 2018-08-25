@@ -3,18 +3,20 @@
 namespace App\Applications\Site\Http\Controllers;
 
 
+use Illuminate\Support\Facades\Cookie;
+
 class IndexRedirectController extends BaseController
 {
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
 	public function index()
 	{
-		//return [1 => 2];
-		return $this->view('home');
-	}
+	    if(Cookie::get('last_locale')){
+            return redirect('/' . Cookie::get('last_locale'));
+        }
 
-	public function sobre()
-	{
-		//return [1 => 2];
-		return $this->view('sobre');
+		return redirect('/pt-br');
 	}
 }
